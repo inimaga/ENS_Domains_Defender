@@ -7,18 +7,21 @@
 import requests
 import threading
 
-url = "https://ensdomain.online/metamask/action_page.php" #endpoint of the phishing site, where the results are posted to once credentials have been collected
+##### Endpoint of the phishing sites, where the results are posted to once credentials have been collected
+#url = "https://ensdomain.online/metamask/action_page.php" # Ensdomain.online is no longer online and has been taken down
+url = "https://claimens.domains/Ens/wallet-RD266-loadingAdd-frontchange/next.php"
 
 ##################
 ### Variables/Parameters: The headers/data collected could vary so posting entries for different possible combinations
 
 # 1 - List of wallets being phished from the site
 wallets = [
-    "MetaMask", 
-    "Coinbase Wallet", 
-    "Binance Chain", 
-    "Blockchain", 
-    "Wallet Connect"]
+    "Portis", 
+    "Coinbase+Wallet", 
+    "Torus", 
+    "MEW+wallet", 
+    "WalletConnect",
+    "Bitski"]
 
 # 2 - List of userAgents (i.e: Browser/Platform)
 # Todo: Add multiple varied userAgents, so entries posted to phishing database simulate being collected from a variety of platforms (not just Macs)
@@ -48,24 +51,29 @@ def send_requests():
                 for userAgent in userAgents:
                     # Looping though the list of seeds, userAgents and Wallets and creating a different combination of data to be sent
                     data = {
-                        "seed": seed,
-                        "wallet": wallet
+                        #"seed": seed,
+                        #"wallet": wallet
+                        "pk": seed,
+                        "walletselected": wallet,
+                        "btn1":"",
                         }
                     headers = {
-                        "Host": "ensdomain.online",
+                        "Host": "claimens.domains",
                         "User-Agent": userAgent,
-                        "Accept": "application/json",
+                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
                         "Accept-Language": "en-GB,en;q=0.5",
                         "Accept-Encoding": "gzip, deflate, br",
-                        "Referer": "https://ensdomain.online/",
+                        "Referer": "https://claimens.domains/Ens/wallet-RD266-loadingAdd-frontchange/",
                         "Content-Type": "application/json",
-                        "Origin": "https://ensdomain.online",
-                        "Content-Length": "148",
+                        "Origin": "https://claimens.domains",
+                        "Content-Length": "44",
                         "DNT": "1",
                         "Connection": "keep-alive",
-                        "Sec-Fetch-Dest": "empty",
-                        "Sec-Fetch-Mode": "cors",
-                        "Sec-Fetch-Site": "same-origin"
+                        "Upgrade-Insecure-Requests": "1",
+                        "Sec-Fetch-Dest": "document",
+                        "Sec-Fetch-Mode": "navigate",
+                        "Sec-Fetch-Site": "same-origin",
+                        "Sec-Fetch-User": "?1"
                         }
                     response = requests.post(url = url, data = data, headers = headers)
                     print(wallet, response) # Upon completion of a request, print to terminal giving visual feedback
